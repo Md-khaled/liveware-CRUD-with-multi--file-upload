@@ -13,20 +13,31 @@ use Livewire\Component;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
+use Livewire\Attributes\Messages;
 
 class Posts extends Component
 {
     use WithFileUploads;
 
-    #[Rule('required|min:3|max:255')]
+    #[Rule('required|min:3|max:255', message: [
+        'title.required' => 'The post title cannot be empty.',
+        'min' => 'The title must be at least 3 characters.',
+        'max' => 'The title cannot exceed 255 characters.'
+    ])]
     public string $title = '';
 
     #[Rule('required|min:10')]
+    #[Messages(['body.min' => 'Please write at least 10 characters.'])]
     public string $body = '';
 
     #[Rule('array')]
     #[Rule('max:1024', as: 'photos.*')]
+    #[Messages([
+        'photos.array' => 'Invalid photo format.',
+        'photos.*.max' => 'Each photo must not exceed 1MB in size.'
+    ])]
     public array $photos = [];
+
 
     public ?Collection $posts = null;
     public ?Collection $currentFiles = null;

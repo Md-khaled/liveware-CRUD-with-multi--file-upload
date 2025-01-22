@@ -46,8 +46,14 @@
 
                         <div class="px-4 py-5">
                             <label class="block text-gray-700">Upload Files</label>
-                            <input type="file" wire:model="photos" multiple class="block w-full mt-2">
-                            @error('photos.*') <span class="text-red-500">{{ $message }}</span> @enderror
+                            <input type="file" wire:model.live="photos" multiple class="block w-full mt-2">
+                            @error('photos') <span class="text-red-500">{{ $message }}</span> @enderror
+                            @foreach($errors->get('photos.*') as $error)
+                                <span class="text-red-500">{{ $error[0] }}</span>
+                            @endforeach
+{{--                            @if($errors->any())--}}
+{{--                                @dd($errors->all())--}}
+{{--                            @endif--}}
                         </div>
                     </div>
                 </div>
